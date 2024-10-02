@@ -1,4 +1,4 @@
-# OpenAI Reverse Proxy
+# OpenAI Gateway
 
 This project is a **reverse proxy** built with **Express.js** to securely forward requests to the OpenAI API. It enables interaction with OpenAI models, such as `gpt-4o-mini`, while securely handling your API keys using environment variables.
 
@@ -42,12 +42,6 @@ Then, add the following content to the `.env` file:
 
 ```
 OPENAI_API_KEY=sk-your-openai-api-key
-```
-
-Make sure not to commit your `.env` file by adding it to `.gitignore`:
-
-```
-.env
 ```
 
 ### 4. Run the Server
