@@ -44,12 +44,6 @@ Then, add the following content to the `.env` file:
 OPENAI_API_KEY=sk-your-openai-api-key
 ```
 
-Make sure not to commit your `.env` file by adding it to `.gitignore`:
-
-```
-.env
-```
-
 ### 4. Run the Server
 
 Start the server locally:
