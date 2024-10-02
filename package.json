@@ -4,29 +4,37 @@
     "description": "A reverse proxy to securely forward requests to OpenAI's API using environment variables for API key management.",
     "main": "server.js",
     "scripts": {
-      "build": "docker compose up --build -d",
-      "start": "node server.js"
+        "build": "docker compose up --build -d",
+        "start": "node server.js",
+        "stop": "docker stop openai-reverse-proxy || true",
+        "remove": "docker rm openai-reverse-proxy || true",
+        "rebuild": "npm run stop && npm run remove && npm run build",
+        "ping": "curl -s http://localhost:3000/ || echo 'Server not responding'",
+        "test": "jest"
     },
     "author": "Paul Stanton",
     "license": "MIT",
     "dependencies": {
-      "axios": "^0.21.1",
-      "cors": "^2.8.5",
-      "dotenv": "^16.4.5",
-      "express": "^4.17.1"
+        "axios": "^0.21.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.17.1"
     },
     "repository": {
-      "type": "git",
-      "url": "https://github.com/your-username/openai-reverse-proxy.git"
+        "type": "git",
+        "url": "https://github.com/your-username/openai-reverse-proxy.git"
     },
     "keywords": [
-      "openai",
-      "reverse-proxy",
-      "api",
-      "proxy",
-      "openai-proxy",
-      "express",
-      "docker"
-    ]
-  }
-  
+        "openai",
+        "reverse-proxy",
+        "api",
+        "proxy",
+        "openai-proxy",
+        "express",
+        "docker"
+    ],
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "supertest": "^7.0.0"
+    }
+}

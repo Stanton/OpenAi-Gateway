@@ -37,13 +37,135 @@ app.post('/api/openai/v1/chat/completions', async (req, res) => {
     }
 });
 
+// Route to create a new thread
+app.post('/api/openai/v1/threads', async (req, res) => {
+    try {
+        console.log('payload', req.body);
+        const openaiResponse = await axios({
+            method: 'post',
+            url: 'https://api.openai.com/v1/threads',
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json',
+                'OpenAI-Beta': 'assistants=v2'  // Required for Assistants API
+            }
+        });
+
+        res.json(openaiResponse.data);
+    } catch (error) {
+        console.error('Error from OpenAI API:', error.response ? error.response.data : error.message);
+        res.status(error.response ? error.response.status : 500).json({
+            error: error.response ? error.response.data : error.message
+        });
+    }
+});
+
+// Route to send a message to a thread
+app.post('/api/openai/v1/threads/:threadId/messages', async (req, res) => {
+    try {
+        const { threadId } = req.params;
+        const openaiResponse = await axios({
+            method: 'post',
+            url: `https://api.openai.com/v1/threads/${threadId}/messages`,
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json',
+                'OpenAI-Beta': 'assistants=v2'
+            },
+            data: req.body  // Forward the body directly to OpenAI API
+        });
+
+        res.json(openaiResponse.data);
+    } catch (error) {
+        console.error('Error from OpenAI API:', error.response ? error.response.data : error.message);
+        res.status(error.response ? error.response.status : 500).json({
+            error: error.response ? error.response.data : error.message
+        });
+    }
+});
+
+// Route to run the assistant on a thread
+app.post('/api/openai/v1/threads/:threadId/runs', async (req, res) => {
+    try {
+        const { threadId } = req.params;
+        const openaiResponse = await axios({
+            method: 'post',
+            url: `https://api.openai.com/v1/threads/${threadId}/runs`,
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json',
+                'OpenAI-Beta': 'assistants=v2'
+            },
+            data: req.body  // Forward the body directly to OpenAI API
+        });
+
+        res.json(openaiResponse.data);
+    } catch (error) {
+        console.error('Error from OpenAI API:', error.response ? error.response.data : error.message);
+        res.status(error.response ? error.response.status : 500).json({
+            error: error.response ? error.response.data : error.message
+        });
+    }
+});
+
+// Route to get the status of an assistant run
+app.get('/api/openai/v1/threads/:threadId/runs/:runId', async (req, res) => {
+    try {
+        const { threadId, runId } = req.params;
+        const openaiResponse = await axios({
+            method: 'get',
+            url: `https://api.openai.com/v1/threads/${threadId}/runs/${runId}`,
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json',
+                'OpenAI-Beta': 'assistants=v2'
+            }
+        });
+
+        res.json(openaiResponse.data);
+    } catch (error) {
+        console.error('Error from OpenAI API:', error.response ? error.response.data : error.message);
+        res.status(error.response ? error.response.status : 500).json({
+            error: error.response ? error.response.data : error.message
+        });
+    }
+});
+
+// Route to get messages from a specific thread
+app.get('/api/openai/v1/threads/:threadId/messages', async (req, res) => {
+    try {
+        const { threadId } = req.params;
+        const openaiResponse = await axios({
+            method: 'get',
+            url: `https://api.openai.com/v1/threads/${threadId}/messages`,
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json',
+                'OpenAI-Beta': 'assistants=v2'  // Include the header for Assistants API v2
+            }
+        });
+
+        res.json(openaiResponse.data);
+    } catch (error) {
+        console.error('Error from OpenAI API:', error.response ? error.response.data : error.message);
+        res.status(error.response ? error.response.status : 500).json({
+            error: error.response ? error.response.data : error.message
+        });
+    }
+});
+
 // Root route for testing
 app.get('/', (req, res) => {
     res.send('Welcome to the OpenAI Reverse Proxy!');
 });
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// Export the app for testing purposes
+module.exports = app;
+
+// Start the server only if not in a test environment
+if (require.main === module) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
