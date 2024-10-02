@@ -1,4 +1,4 @@
-# OpenAI Reverse Proxy
+# OpenAI Gateway
 
 This project is a **reverse proxy** built with **Express.js** to securely forward requests to the OpenAI API. It enables interaction with OpenAI models, such as `gpt-4o-mini`, while securely handling your API keys using environment variables.
 
