@@ -20,7 +20,7 @@ This project is a **reverse proxy** built with **Express.js** to securely forwar
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/openai-reverse-proxy.git
+git clone https://github.com/Stanton/openai-reverse-proxy.git
 cd openai-reverse-proxy
 ```
 
